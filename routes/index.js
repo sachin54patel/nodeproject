@@ -84,7 +84,7 @@ router.get('/signup', function(req, res, next) {
   }
   else
   {
-    res.render('signup', { title: 'Sign Up Form',msg:'' });
+    res.render('signup', { title: 'Sign Up Forms',msg:'' });
   }
 });
 
