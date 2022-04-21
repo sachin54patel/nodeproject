@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://root:E7SCKKLbZosIfw4P@cluster0.mhm4k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+// mongoose.connect('mongodb+srv://root:E7SCKKLbZosIfw4P@cluster0.mhm4k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+mongoose.connect('mongodb://localhost:27017/pms');
+
 var conn = mongoose.Collection;
 var UserSchema = new mongoose.Schema({
     username : {

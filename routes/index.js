@@ -7,6 +7,8 @@ var bcrypt = require('bcryptjs');
 /* GET home page. */
 var jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
+const { response } = require('express');
+const { isValidObjectId } = require('mongoose');
 
 // var catModule = categoryModule.find({});
 
@@ -302,13 +304,26 @@ router.post('/add_password',loginUserCheck,checkcategorypass,[body('category','S
 router.get('/password_list', function(req, res, next) {
   var username = localStorage.getItem('userName');
 
-  var catPass = categorPasswordModule.find({});
-  catPass.exec((err, data)=>{
+  //const match = { $match: { _id: ObjectId(id) } };
+  var catPass = categorPasswordModule.aggregate([
+    {
+    $lookup :
+    {
+      from: "categories",
+      localField:  "password_category",
+      foreignField: "_id",
+      as: "pass_cat"
+    }
+  },{
+    $unwind:"$pass_cat"
+  }
+]).exec((err, data)=>{
   //catModule.exec(function(err,data){
       if(err) throw err;
       else
       {
-        //console.log(data); 
+        console.log(data); 
+      //  res.send(data);
         res.render('password_list', { title: 'Password list',username:username ,records:data ,message:'Password saved successfully'});
         // res.render('add_password', { title: 'Add Password',username:username });
       }
