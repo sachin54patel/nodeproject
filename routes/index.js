@@ -256,6 +256,9 @@ catDel.exec(function(err,data){
   });
 });
 
+
+
+
 router.get('/add_password', function(req, res, next) {
   var username = localStorage.getItem('userName');
   var catModule = categoryModule.find({});
@@ -297,6 +300,26 @@ router.post('/add_password',loginUserCheck,checkcategorypass,[body('category','S
         // res.render('add_category', { title: 'Add Category', msg:'category added successfully',error:'',username:username});
       });
     } 
+});
+
+router.post('/update_password',loginUserCheck, function(req, res, next) {
+  var username = localStorage.getItem('userName');
+  var id = req.body.id;
+       var password_detail = req.body.editor1;
+       var password_category = req.body.category;
+  console.log(password_detail);
+  var catDel = categorPasswordModule.findByIdAndUpdate(id,{password_detail:password_detail,password_category:password_category});
+//  or
+// var catDel = categoryModule.findByOne({_id:id});  
+catDel.exec(function(err,data){
+    if(err) throw err;
+    else
+    {
+      // console.log(data);
+     res.redirect('/passwordcategory');
+      //res.render('category_update', { title: 'Category Update',username:username,msg:'', error:'',data :data });
+    }   
+  });
 });
 
 
@@ -351,7 +374,7 @@ router.get('/password_details_edit/:id', function(req, res, next) {
             {
             
         //console.log(data); 
-        res.render('password_details_edit', { title: 'Password details edit',username:username,records:data1 ,record:data ,message:''});
+        res.render('password_details_edit', { title: 'Password details edit',username:username,multicat:data1 ,record:data ,message:''});
         // res.render('add_password', { title: 'Add Password',username:username });
       }});  
     
